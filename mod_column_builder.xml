@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" method="upgrade">
+    <name>Column Builder</name>
+    <author>Damir B</author>
+    <creationDate>2025</creationDate>
+    <copyright>All rights reserved by NWD</copyright>
+    <license>GPL 2.0</license>
+    <version>1.0.0</version>
+    <description>Column Builder Module</description>
+    <namespace path="src">Nwd\Module\ColumnBuilder</namespace>
+
+    <files>
+        <folder module="mod_column_builder">services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <media destination="mod_column_builder" folder="media">
+        <folder>css</folder>
+        <folder>scss</folder>
+    </media>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="Row and Column Settings">
+                <field type="subform" name="rows" label="Add Rows" multiple="true" description="Create rows with columns">
+                    <form>
+                        <field name="custom_class" type="text" label="Row Custom Class" description="Add custom CSS classes for this row" />
+                        <field
+                                name="use_container"
+                                type="radio"
+                                label="Wrap in Container"
+                                class="btn-group btn-group-yesno"
+                                default="0"
+                                description="Wrap this row content in a container"
+                        >
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </field>
+                        <field name="dynamic_width" type="radio" label="Use dynamic column widths" class="btn-group btn-group-yesno" default="1">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </field>
+
+                        <!-- Static width columns -->
+                        <field type="subform" name="columns" label="Add Custom Columns" description="Configure columns with custom widths" multiple="true" showon="dynamic_width:0">
+                            <form>
+                                <field name="custom_class" type="text" label="Column Custom Class" description="Add custom CSS classes for this column" />
+
+                                <!-- Width fields -->
+                                <field name="small_width" type="number"
+                                       label="Small Width (sm)"
+                                       default="12"
+                                       min="1"
+                                       max="12"
+                                       description="Column width on small screens (&lt;576px)" />
+                                <field name="medium_width" type="number"
+                                       label="Medium Width (md)"
+                                       default="6"
+                                       min="1"
+                                       max="12"
+                                       description="Column width on medium screens (≥768px)" />
+                                <field name="large_width" type="number"
+                                       label="Large Width (lg)"
+                                       default="4"
+                                       min="1"
+                                       max="12"
+                                       description="Column width on large screens (≥992px)" />
+                                <field name="xlarge_width" type="number"
+                                       label="Extra Large Width (xl)"
+                                       default="3"
+                                       min="1"
+                                       max="12"
+                                       description="Column width on extra large screens (≥1200px)" />
+                                <field name="xxlarge_width" type="number"
+                                       label="XX-Large Width (xxl)"
+                                       default="3"
+                                       min="1"
+                                       max="12"
+                                       description="Column width on extra extra large screens (≥1400px)" />
+
+                                <!-- Image section with custom class -->
+                                <field name="enable_image" type="radio" label="Enable Image" class="btn-group btn-group-yesno" default="0">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </field>
+                                <field name="image" type="media" label="Image" description="Upload an image" showon="enable_image:1" />
+                                <field
+                                        name="image_custom_class"
+                                        type="text"
+                                        label="Image Custom Class"
+                                        description="Add custom CSS classes for this image"
+                                        showon="enable_image:1"
+                                />
+
+                                <!-- Editor section with custom class -->
+                                <field name="enable_editor" type="radio" label="Enable Text Content" class="btn-group btn-group-yesno" default="0">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </field>
+                                <field name="editor_content" type="editor" filter="safehtml" label="Text Content" description="Write your custom text" showon="enable_editor:1" />
+                                <field
+                                        name="editor_custom_class"
+                                        type="text"
+                                        label="Text Content Custom Class"
+                                        description="Add custom CSS classes for the text content"
+                                        showon="enable_editor:1"
+                                />
+                            </form>
+                        </field>
+
+                        <!-- Dynamic width columns -->
+                        <field type="subform" name="dynamic_columns" label="Dynamic Columns Content" description="Configure content for auto-width columns" multiple="true" showon="dynamic_width:1">
+                            <form>
+                                <field name="custom_class" type="text" label="Column Custom Class" description="Add custom CSS classes for this column" />
+
+                                <!-- Image section with custom class -->
+                                <field name="enable_image" type="radio" label="Enable Image" class="btn-group btn-group-yesno" default="0">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </field>
+                                <field name="image" type="media" label="Image" description="Upload an image" showon="enable_image:1" />
+                                <field
+                                        name="image_custom_class"
+                                        type="text"
+                                        label="Image Custom Class"
+                                        description="Add custom CSS classes for this image"
+                                        showon="enable_image:1"
+                                />
+
+                                <!-- Editor section with custom class -->
+                                <field name="enable_editor" type="radio" label="Enable Text Content" class="btn-group btn-group-yesno" default="0">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </field>
+                                <field name="editor_content" type="editor" filter="safehtml" label="Text Content" description="Write your custom text" showon="enable_editor:1" />
+                                <field
+                                        name="editor_custom_class"
+                                        type="text"
+                                        label="Text Content Custom Class"
+                                        description="Add custom CSS classes for the text content"
+                                        showon="enable_editor:1"
+                                />
+                            </form>
+                        </field>
+
+                        <!-- Background settings (unchanged) -->
+                        <field
+                                name="background_type"
+                                type="radio"
+                                label="Background Type"
+                                class="btn-group btn-group-yesno"
+                                default="solid"
+                        >
+                            <option value="solid">Solid Color</option>
+                            <option value="gradient">Gradient</option>
+                        </field>
+
+                        <field
+                                name="background_color"
+                                type="color"
+                                label="Background Color"
+                                description="Choose solid background color"
+                                format="hex"
+                                showon="background_type:solid"
+                        />
+
+                        <fieldset name="gradient_settings" showon="background_type:gradient">
+                            <field
+                                    name="gradient_start_color"
+                                    type="color"
+                                    label="Gradient Start Color"
+                                    description="Choose gradient start color"
+                                    format="rgba"
+                                    default="rgba(54, 114, 205, 0.5)rgba(54, 114, 205, 0)"
+                                    showon="background_type:gradient"
+                            />
+                            <field
+                                    name="gradient_end_color"
+                                    type="color"
+                                    label="Gradient End Color"
+                                    description="Choose gradient end color"
+                                    format="rgba"
+                                    default="rgba(54, 114, 205, 0.5)"
+                                    showon="background_type:gradient"
+                            />
+                            <field
+                                    name="gradient_angle"
+                                    type="number"
+                                    label="Gradient Angle"
+                                    description="Enter gradient angle in degrees"
+                                    default="184"
+                                    min="0"
+                                    max="360"
+                                    showon="background_type:gradient"
+                            />
+                            <field
+                                    name="gradient_start_position"
+                                    type="number"
+                                    label="Start Position (%)"
+                                    description="Gradient start position percentage"
+                                    default="3.28"
+                                    min="0"
+                                    max="100"
+                                    showon="background_type:gradient"
+                            />
+                            <field
+                                    name="gradient_end_position"
+                                    type="number"
+                                    label="End Position (%)"
+                                    description="Gradient end position percentage"
+                                    default="90.72"
+                                    min="0"
+                                    max="100"
+                                    showon="background_type:gradient"
+                            />
+                        </fieldset>
+                    </form>
+                </field>
+            </fieldset>
+
+            <!-- Advanced settings (unchanged) -->
+            <fieldset name="advanced">
+                <field
+                        name="layout"
+                        type="modulelayout"
+                        label="JFIELD_ALT_LAYOUT_LABEL"
+                        class="form-select"
+                        validate="moduleLayout"
+                />
+                <field
+                        name="moduleclass_sfx"
+                        type="textarea"
+                        label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                        rows="3"
+                        validate="CssIdentifier"
+                />
+                <field
+                        name="cache"
+                        type="list"
+                        label="COM_MODULES_FIELD_CACHING_LABEL"
+                        default="1"
+                        filter="integer"
+                        validate="options"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field
+                        name="cache_time"
+                        type="number"
+                        label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                        default="900"
+                        filter="integer"
+                />
+                <field
+                        name="cachemode"
+                        type="hidden"
+                        default="static"
+                >
+                    <option value="static"></option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="Column Builder">http://joomlaupdatesrv.service.internal/apps/mod_column_builder.xml</server>
+    </updateservers>
+</extension>
