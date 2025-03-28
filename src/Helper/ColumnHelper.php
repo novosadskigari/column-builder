@@ -38,9 +38,9 @@ class ColumnHelper
             $uniqueString .= '-' . $column['custom_class'];
         }
 
-        // Include content identifiers if they exist
-        if (!empty($column['image'])) {
-            $uniqueString .= '-' . basename($column['image']);
+        // Handle accessiblemedia field structure
+        if (!empty($column['image']) && is_array($column['image'])) {
+            $uniqueString .= '-' . basename($column['image']['imagefile'] ?? '');
         }
 
         if (!empty($column['editor_content'])) {
@@ -58,7 +58,6 @@ class ColumnHelper
         return 'mod-column-' . $hash;
     }
 
-
     public static function getRowId($moduleId, $rowIndex, $row)
     {
         // Create a unique string based on stable row data
@@ -75,16 +74,30 @@ class ColumnHelper
         return 'mod-row-' . $hash;
     }
 
-
-    public static function renderImage($imagePath)
+    public static function renderImage($imageData)
     {
+        if (empty($imageData)) {
+            return '';
+        }
+
+        // Handle accessiblemedia field structure
+        if (is_array($imageData)) {
+            $imagePath = $imageData['imagefile'] ?? '';
+            $altText = $imageData['alt_text'] ?? '';
+        } else {
+            // Fallback for legacy media field
+            $imagePath = $imageData;
+            $altText = '';
+        }
+
+        // Ensure we have a valid image path
         if (empty($imagePath)) {
             return '';
         }
 
         return HTMLHelper::_('image',
             Uri::root(false) . htmlspecialchars($imagePath, ENT_QUOTES),
-            '',
+            htmlspecialchars($altText, ENT_QUOTES),
             ['loading' => 'lazy', 'class' => 'img-fluid'],
             false
         );
@@ -129,7 +142,6 @@ class ColumnHelper
             return '';
         }
 
-        // Basic sanitization - you might want to adjust this based on your needs
         return is_string($content) ? $content : '';
     }
 

@@ -5,7 +5,7 @@
     <creationDate>2025</creationDate>
     <copyright>All rights reserved by NWD</copyright>
     <license>GPL 2.0</license>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>Column Builder Module</description>
     <namespace path="src">Nwd\Module\ColumnBuilder</namespace>
 
@@ -84,7 +84,7 @@
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </field>
-                                <field name="image" type="media" label="Image" description="Upload an image" showon="enable_image:1" />
+                                <field name="image" type="accessiblemedia" label="Image" description="Upload an image" showon="enable_image:1" />
                                 <field
                                         name="image_custom_class"
                                         type="text"
@@ -119,7 +119,7 @@
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </field>
-                                <field name="image" type="media" label="Image" description="Upload an image" showon="enable_image:1" />
+                                <field name="image" type="accessiblemedia" label="Image" description="Upload an image" showon="enable_image:1" />
                                 <field
                                         name="image_custom_class"
                                         type="text"
